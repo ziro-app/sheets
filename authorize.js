@@ -1,4 +1,4 @@
-const { google: { auth } } = require('googleapis')
+const auth = require('googleapis').google.auth
 const keyFile = './credentials.json'
 const scopes = 'https://www.googleapis.com/auth/spreadsheets'
 
