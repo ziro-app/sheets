@@ -1,23 +1,36 @@
-const axios = require('axios')
+const sheets = require('googleapis').google.sheets
+const sheet = sheets('v4').spreadsheets
+const authorize = require('../auth/authorize')
 
-module.exports.request = async () => {
-	const config = {}
+module.exports.request = async (apiResource, apiMethod, spreadsheetId, range, resource, otherParams) => {
 	try {
-		const { data } = await axios(config)
-		return {
-			statusCode: 200,
-			body: JSON.stringify(data, null, 4)
-		}
-	} catch (error) {
-		if (error.response && error.response.data && error.response.data.error) {
-			const { status_code, message } = error.response.data.error
-			throw { statusCode: status_code, body: message }
-		} else {
-			console.log('Unexpected error:', error)
+		const auth = await authorize()
+		try {
+			const { data } = await sheet[apiResource][apiMethod]({
+				auth,
+				spreadsheetId,
+				range,
+				resource,
+				...otherParams
+			})
+			console.log(data)
 			return {
-				statusCode: 500,
-				body: JSON.stringify('Internal error. Check logs', null, 4)
+				statusCode: 200,
+				body: JSON.stringify(data, null, 4)
+			}
+		} catch (error) {
+			if (error.response && error.response.data && error.response.data.error) {
+				const { status_code, message } = error.response.data.error
+				throw { statusCode: status_code, body: message }
+			} else {
+				console.log('Unexpected error:', error)
+				return {
+					statusCode: 500,
+					body: JSON.stringify('Internal error. Check logs', null, 4)
+				}
 			}
 		}
+	} catch (error) {
+		console.log('AUTH ERROR \n', error)
 	}
 }

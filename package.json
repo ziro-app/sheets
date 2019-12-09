@@ -1,7 +1,7 @@
 {
   "name": "sheets",
   "version": "1.0.0",
-  "description": "api to connect google sheets to ziro&#x27;s backend stack",
+  "description": "api to connect google sheets to ziro's backend stack",
   "main": "index.js",
   "scripts": {
     "start": "netlify-lambda serve -c ./webpack.functions.js ./src/lambdas",
