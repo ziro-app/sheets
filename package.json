@@ -1,16 +1,26 @@
 {
   "name": "sheets",
   "version": "1.0.0",
-  "description": "",
+  "description": "api to connect google sheets to ziro&#x27;s backend stack",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "netlify-lambda serve -c ./webpack.functions.js ./src/lambdas",
+    "build": "netlify-lambda build -c ./webpack.functions.js ./src/lambdas"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ziro-app/sheets.git"
   },
   "keywords": [],
   "author": "Vitor Barbosa",
   "license": "ISC",
   "dependencies": {
+    "@ziro/middleware": "^1.0.0",
+    "axios": "^0.19.0",
     "dotenv": "^8.2.0",
-    "googleapis": "^45.0.0"
+    "googleapis": "^45.0.0",
+    "middy": "^0.30.4",
+    "netlify-lambda": "^1.6.3",
+    "webpack-node-externals": "^1.7.2"
   }
 }
