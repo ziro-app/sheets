@@ -2,7 +2,8 @@ const sheets = require('googleapis').google.sheets
 const sheet = sheets('v4').spreadsheets
 const authorize = require('../auth/authorize')
 
-module.exports.request = async (apiResource, apiMethod, spreadsheetId, range, resource, otherParams) => {
+const request = async body => {
+	const { apiResource, apiMethod, spreadsheetId, range, resource, otherParams } = body
 	try {
 		const auth = await authorize()
 		try {
@@ -34,3 +35,5 @@ module.exports.request = async (apiResource, apiMethod, spreadsheetId, range, re
 		console.log('AUTH ERROR \n', error)
 	}
 }
+
+module.exports = request
