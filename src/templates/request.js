@@ -26,32 +26,30 @@ const request = async (headers, body, queryStringParameters) => {
 	/* if all required params are present, then authorize and call google sheets api */
 	try {
 		const auth = await authorize()
-		try {
-			const { data } = await sheet[apiResource][apiMethod]({
-				auth,
-				spreadsheetId,
-				range,
-				resource,
-				...otherParams
-			})
-			return {
-				statusCode: 200,
-				body: JSON.stringify(data, null, 4)
-			}
-		} catch (error) {
-			if (error.response && error.response.data && error.response.data.error) {
-				const { status_code, message } = error.response.data.error
-				throw { statusCode: status_code, body: message }
-			} else {
-				console.log('Unexpected error:', error)
-				return {
-					statusCode: 500,
-					body: JSON.stringify('Internal error. Check logs', null, 4)
-				}
-			}
+		const { data } = await sheet[apiResource][apiMethod]({
+			auth,
+			spreadsheetId,
+			range,
+			resource,
+			...otherParams
+		})
+		return {
+			statusCode: 200,
+			body: JSON.stringify(data, null, 4)
 		}
 	} catch (error) {
-		console.log('AUTH ERROR \n', error)
+		if (error.authError)
+			throw { statusCode: 500, body: JSON.stringify(error.message, null, 4) }
+		if (error.response && error.response.data && error.response.data.error) {
+			const { code, message } = error.response.data.error
+			throw { statusCode: code, body: message }
+		} else {
+			console.log('Unexpected error:', error)
+			return {
+				statusCode: 500,
+				body: JSON.stringify('Internal error. Check logs', null, 4)
+			}
+		}
 	}
 }
 
