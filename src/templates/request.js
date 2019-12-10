@@ -2,7 +2,13 @@ const sheets = require('googleapis').google.sheets
 const sheet = sheets('v4').spreadsheets
 const authorize = require('../auth/authorize')
 
-const request = async body => {
+const request = async (headers, body) => {
+	/* if headers are not valid, then return error message */
+	if (headers['content-type'] !== 'application/json')
+		return {
+			statusCode: 400,
+			body: JSON.stringify('content-type header must be application/json and body must be a raw json')
+	}
 	const { apiResource, apiMethod, spreadsheetId, range, resource, otherParams } = body
 	/* if any required param is missing from body request, then return error message */
 	if (!apiResource) return { statusCode: 400, body: JSON.stringify('apiResource is required') }
@@ -22,7 +28,6 @@ const request = async body => {
 				resource,
 				...otherParams
 			})
-			console.log(data)
 			return {
 				statusCode: 200,
 				body: JSON.stringify(data, null, 4)
