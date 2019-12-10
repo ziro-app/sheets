@@ -2,13 +2,19 @@ const sheets = require('googleapis').google.sheets
 const sheet = sheets('v4').spreadsheets
 const authorize = require('../auth/authorize')
 
-const request = async (headers, body) => {
+const request = async (headers, body, queryStringParameters) => {
+	/* if query string parameters are present, then return error message */
+	if (Object.getOwnPropertyNames(queryStringParameters).length > 0)
+		return {
+			statusCode: 400,
+			body: JSON.stringify('query string parameters are not allowed')
+		}
 	/* if headers are not valid, then return error message */
 	if (headers['content-type'] !== 'application/json')
 		return {
 			statusCode: 400,
 			body: JSON.stringify('content-type header must be application/json and body must be a raw json')
-	}
+		}
 	const { apiResource, apiMethod, spreadsheetId, range, resource, otherParams } = body
 	/* if any required param is missing from body request, then return error message */
 	if (!apiResource) return { statusCode: 400, body: JSON.stringify('apiResource is required') }
