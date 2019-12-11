@@ -15,16 +15,11 @@ const request = async (headers, body, queryStringParameters) => {
 			statusCode: 400,
 			body: JSON.stringify('content-type header must be application/json and body must be a raw json')
 		}
-	const { apiResource, apiMethod, spreadsheetId, range, resource, otherParams } = body
+	/* authorize and call google sheets api passing client params */
 	try {
+		const { apiResource, apiMethod, ...otherParams } = body
 		const auth = await authorize()
-		const { data } = await sheet[apiResource][apiMethod]({
-			auth,
-			spreadsheetId,
-			range,
-			resource,
-			...otherParams
-		})
+		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
 		return {
 			statusCode: 200,
 			body: JSON.stringify(data, null, 4)
