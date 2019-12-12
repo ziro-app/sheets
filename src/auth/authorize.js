@@ -1,12 +1,12 @@
 const auth = require('googleapis').google.auth
-const createKeyFile = require('./createKeyFile.js')
-const keyFile = './src/auth/credentials.json'
 const scopes = 'https://www.googleapis.com/auth/spreadsheets'
 
 const authorize = async () => {
 	try {
-		await createKeyFile()
-		return auth.getClient({ keyFile, scopes })
+		return auth.getClient({ scopes, credentials: {
+			'private_key': process.env.PRIVATE_KEY,
+			'client_email': process.env.CLIENT_EMAIL
+		}})
 	} catch (error) {
 		console.log('AUTH ERROR \n', error)
 		throw { authError: true, message: error }
