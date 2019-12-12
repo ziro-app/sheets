@@ -1,7 +1,8 @@
 require('dotenv').config()
-const fs = require('fs')
+const promisify = require('util').promisify
+const write = promisify(require('fs').writeFile)
 
-const createKeyFile = () => fs.writeFileSync('./src/auth/credentials.json', JSON.stringify({
+const createKeyFile = async () => write('./src/auth/credentials.json', JSON.stringify({
 	"private_key": process.env.PRIVATE_KEY,
 	"client_email": process.env.CLIENT_EMAIL
 }, null, 2))
