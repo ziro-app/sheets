@@ -1,5 +1,6 @@
 const auth = require('googleapis').google.auth
-require('./credentials-create.js')
+const createKeyFile = require('./createKeyFile.js')
+createKeyFile()
 const keyFile = './src/auth/credentials.json'
 const scopes = 'https://www.googleapis.com/auth/spreadsheets'
 
