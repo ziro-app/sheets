@@ -19,9 +19,11 @@ const request = async (headers, body, queryStringParameters) => {
 	try {
 		const { apiResource, apiMethod, ...otherParams } = body
 		const auth = await authorize()
-		console.log(auth)
-		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
-		console.log('HERE>><<')
+		console.log('BEFORE>><<')
+		console.log(sheet.values)
+		const data = await sheet.values.get({ auth, ...otherParams })
+		// const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
+		console.log('AFTER>><<')
 		console.log(data)
 		return {
 			statusCode: 200,
