@@ -31,6 +31,7 @@ const request = async (headers, body, queryStringParameters) => {
 		if (error.response && error.response.data && error.response.data.error) {
 			const { code, message } = error.response.data.error
 			if (code && message) throw { statusCode: code, body: message }
+			console.log(error.response.data)
 			throw { statusCode: 400, body: error.response.data.error }
 		}
 		console.log(error)
