@@ -3,7 +3,6 @@ const sheet = sheets('v4').spreadsheets
 const authorize = require('../auth/authorize')
 
 const request = async (headers, body, queryStringParameters) => {
-	console.log(body)
 	/* if query string parameters are present, then return error message */
 	if (Object.getOwnPropertyNames(queryStringParameters).length > 0)
 		return {
@@ -20,6 +19,7 @@ const request = async (headers, body, queryStringParameters) => {
 	try {
 		const { apiResource, apiMethod, ...otherParams } = body
 		const auth = await authorize()
+		console.log('after')
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
 		console.log(data)
 		return {

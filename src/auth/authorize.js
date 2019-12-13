@@ -2,6 +2,7 @@ const auth = require('googleapis').google.auth
 const scopes = 'https://www.googleapis.com/auth/spreadsheets'
 
 const authorize = async () => {
+	console.log('here')
 	try {
 		return auth.getClient({ scopes, credentials: {
 			'private_key': Buffer.from(process.env.PRIVATE_KEY, 'base64').toString('ascii'),
