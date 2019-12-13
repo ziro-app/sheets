@@ -20,6 +20,7 @@ const request = async (headers, body, queryStringParameters) => {
 		const { apiResource, apiMethod, ...otherParams } = body
 		const auth = await authorize()
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
+		console.log(data)
 		return {
 			statusCode: 200,
 			body: JSON.stringify(data, null, 4)
