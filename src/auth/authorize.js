@@ -6,7 +6,7 @@ const authorize = async () => {
 		console.log(process.env.OLD_KEY)
 		// console.log(Buffer.from(process.env.PRIVATE_KEY, 'base64').toString('ascii'))
 		return auth.getClient({ scopes, credentials: {
-			'private_key': Buffer.from(process.env.OLD_KEY, 'ascii').toString('ascii'),
+			'private_key': process.env.OLD_KEY,
 			'client_email': process.env.CLIENT_EMAIL
 		}})
 	} catch (error) {
