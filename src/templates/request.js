@@ -20,6 +20,7 @@ const request = async (headers, body, queryStringParameters) => {
 		const { apiResource, apiMethod, ...otherParams } = body
 		const auth = await authorize()
 		console.log('after')
+		console.log(auth)
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
 		console.log(data)
 		return {
