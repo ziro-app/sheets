@@ -29,17 +29,17 @@ const request = async (headers, body, queryStringParameters) => {
 			body: JSON.stringify(data, null, 4)
 		}
 	} catch (error) {
-		console.log(error)
 		if (error.authError)
 			throw { statusCode: 500, body: JSON.stringify(error.message, null, 4) }
 		if (error.response && error.response.data && error.response.data.error) {
 			const { code, message } = error.response.data.error
-			throw { statusCode: code, body: message }
-		} else {
-			return {
-				statusCode: 500,
-				body: JSON.stringify(`Internal error. ${error}`, null, 4)
-			}
+			if (code && message) throw { statusCode: code, body: message }
+			throw { statusCode: 400, body: error.response.data.error }
+		}
+		console.log(error)
+		return {
+			statusCode: 500,
+			body: JSON.stringify(`Internal error. ${error}`, null, 4)
 		}
 	}
 }
