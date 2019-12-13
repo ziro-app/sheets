@@ -20,11 +20,6 @@ const request = async (headers, body, queryStringParameters) => {
 		const { apiResource, apiMethod, ...otherParams } = body
 		const auth = await authorize()
 		console.log('BEFORE>><<')
-		console.log(sheet.values)
-		console.log(apiResource)
-		console.log(apiMethod)
-		console.log(auth)
-		console.log(otherParams)
 		const data = await sheet.values.get({ auth, ...otherParams })
 		// const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
 		console.log('AFTER>><<')
@@ -34,6 +29,7 @@ const request = async (headers, body, queryStringParameters) => {
 			body: JSON.stringify(data, null, 4)
 		}
 	} catch (error) {
+		console.log(error)
 		if (error.authError)
 			throw { statusCode: 500, body: JSON.stringify(error.message, null, 4) }
 		if (error.response && error.response.data && error.response.data.error) {
