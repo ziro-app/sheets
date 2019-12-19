@@ -1,26 +1,27 @@
 const sheets = require('googleapis').google.sheets
 const sheet = sheets('v4').spreadsheets
 const authorize = require('../auth/authorize')
+const { isApiResourceValid, validResources } = require('../validations/index')
 
 const request = async (headers, body, queryStringParameters) => {
-	/* if query string parameters are present, then return error message */
 	if (Object.getOwnPropertyNames(queryStringParameters).length > 0)
 		return {
 			statusCode: 400,
 			body: JSON.stringify('query string parameters are not allowed')
 		}
-	/* if headers are not valid, then return error message */
 	if (headers['content-type'] !== 'application/json')
 		return {
 			statusCode: 400,
 			body: JSON.stringify('content-type header must be application/json and body must be a raw json')
 		}
-	/* authorize and call google sheets api passing client params */
+	const { apiResource, apiMethod, ...otherParams } = body
+	console.log(!isApiResourceValid(apiResource))
+	if (!isApiResourceValid(apiResource))
+		return {
+			statusCode: 400,
+			body: JSON.stringify(`API resource is invalid. Valid resources are ${validResources}`)
+		}
 	try {
-		const { apiResource, apiMethod, ...otherParams } = body
-		const valid = ['developerMetadata','sheets','values']
-		const isApiResourceValid = valid.some(validResource => validResource === apiResource)
-		if (!isApiResourceValid) throw { apiResourceError: true, message: `API resource is invalid. Valid resources are ${valid}` }
 		const auth = await authorize()
 		console.log(auth)
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
