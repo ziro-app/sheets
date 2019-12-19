@@ -5,7 +5,10 @@ const {
 	areQueryParamsPresent,
 	isAppJsonHeaderNotPresent,
 	isApiResourceInvalid,
-	validResources
+	validResources,
+	isApiMethodInvalid,
+	validMethods,
+	
 } = require('../validations/index')
 
 const request = async (headers, body, queryStringParameters) => {
@@ -24,6 +27,11 @@ const request = async (headers, body, queryStringParameters) => {
 		return {
 			statusCode: 400,
 			body: JSON.stringify(`API resource is invalid. Valid resources are ${validResources}`)
+		}
+	if (isApiMethodInvalid(apiMethod))
+		return {
+			statusCode: 400,
+			body: JSON.stringify(`API method is invalid. Valid methods are ${validMethods}`)
 		}
 	try {
 		const auth = await authorize()
