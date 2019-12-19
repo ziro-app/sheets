@@ -2,25 +2,25 @@ const sheets = require('googleapis').google.sheets
 const sheet = sheets('v4').spreadsheets
 const authorize = require('../auth/authorize')
 const {
-	areQueryParamsValid,
-	areHeadersValid,
-	isApiResourceValid,
+	areQueryParamsPresent,
+	isAppJsonHeaderNotPresent,
+	isApiResourceInvalid,
 	validResources
 } = require('../validations/index')
 
 const request = async (headers, body, queryStringParameters) => {
 	const { apiResource, apiMethod, ...otherParams } = body
-	if (!areQueryParamsValid(queryStringParameters))
+	if (areQueryParamsPresent(queryStringParameters))
 		return {
 			statusCode: 400,
 			body: JSON.stringify('usage of query string parameters is not allowed')
 		}
-	if (!areHeadersValid(headers))
+	if (isAppJsonHeaderNotPresent(headers))
 		return {
 			statusCode: 400,
 			body: JSON.stringify('content-type header must be application/json and body must be a raw json')
 		}
-	if (!isApiResourceValid(apiResource))
+	if (isApiResourceInvalid(apiResource))
 		return {
 			statusCode: 400,
 			body: JSON.stringify(`API resource is invalid. Valid resources are ${validResources}`)
