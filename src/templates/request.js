@@ -18,6 +18,9 @@ const request = async (headers, body, queryStringParameters) => {
 	/* authorize and call google sheets api passing client params */
 	try {
 		const { apiResource, apiMethod, ...otherParams } = body
+		const valid = ['developerMetadata','sheets','values']
+		const isApiResourceValid = valid.some(validResource => validResource === apiResource)
+		if (!isApiResourceValid) throw { apiResourceError: true, message: `API resource is invalid. Valid resources are ${valid}` }
 		const auth = await authorize()
 		console.log(auth)
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
@@ -26,6 +29,8 @@ const request = async (headers, body, queryStringParameters) => {
 			body: JSON.stringify(data, null, 4)
 		}
 	} catch (error) {
+		if (error.apiResourceError)
+			throw { statusCode: 400, body: error.message }
 		if (error.authError)
 			throw { statusCode: 500, body: JSON.stringify(error.message, null, 4) }
 		if (error.response && error.response.data && error.response.data.error) {
