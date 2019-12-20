@@ -7,7 +7,7 @@ const {
 	isApiResourceInvalid,
 	validResources,
 	isApiMethodInvalid,
-	validMethods,
+	validMethods
 	
 } = require('../validations/index')
 
@@ -34,6 +34,7 @@ const request = async (headers, body, queryStringParameters) => {
 			body: JSON.stringify(`API method is invalid. Valid methods are ${validMethods}`)
 		}
 	try {
+		console.log(process.env.PRIVATE_KEY)
 		const auth = await authorize()
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
 		return {
