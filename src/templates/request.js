@@ -35,11 +35,11 @@ const request = async (headers, body, queryStringParameters) => {
 			body: JSON.stringify(`API method is invalid. Valid methods are ${validMethods}`)
 		}
 	try {
-		console.log(process.env.ORIGINAL_KEY)
+		// console.log(process.env.ORIGINAL_KEY)
 		const auth = await authorize()
-		console.log(auth)
-		const { data } = await post('https://enw8t7l5vq4i.x.pipedream.net/', { auth, ...otherParams })		
-		// const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
+		// console.log(auth)
+		// const { data } = await post('https://enw8t7l5vq4i.x.pipedream.net/', { auth, ...otherParams })		
+		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
 		return {
 			statusCode: 200,
 			body: JSON.stringify(data, null, 4)
