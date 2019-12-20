@@ -36,6 +36,7 @@ const request = async (headers, body, queryStringParameters) => {
 	try {
 		console.log(process.env.PRIVATE_KEY)
 		const auth = await authorize()
+		console.log(auth)
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
 		return {
 			statusCode: 200,
