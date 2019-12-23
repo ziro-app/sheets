@@ -1,6 +1,7 @@
 const sheets = require('googleapis').google.sheets
 const sheet = sheets('v4').spreadsheets
 const authorize = require('../auth/authorize')
+const response = require('../utils/response')
 const {
 	areQueryParamsPresent,
 	isAppJsonHeaderNotPresent,
@@ -8,38 +9,22 @@ const {
 	validResources,
 	isApiMethodInvalid,
 	validMethods
-	
-} = require('../validations/index')
+} = require('../utils/validations')
 
 const request = async (headers, body, queryStringParameters) => {
 	const { apiResource, apiMethod, ...otherParams } = body
 	if (areQueryParamsPresent(queryStringParameters))
-		return {
-			statusCode: 400,
-			body: JSON.stringify('usage of query string parameters is not allowed')
-		}
+		return response(400, 'usage of query string parameters is not allowed')
 	if (isAppJsonHeaderNotPresent(headers))
-		return {
-			statusCode: 400,
-			body: JSON.stringify('content-type header must be application/json and body must be a raw json')
-		}
+		return response(400, 'content-type header must be application/json and body must be a raw json')
 	if (isApiResourceInvalid(apiResource))
-		return {
-			statusCode: 400,
-			body: JSON.stringify(`API resource is invalid. Valid resources are ${validResources}`)
-		}
+		return response(400, `API resource is invalid. Valid resources are ${validResources}`)
 	if (isApiMethodInvalid(apiMethod))
-		return {
-			statusCode: 400,
-			body: JSON.stringify(`API method is invalid. Valid methods are ${validMethods}`)
-		}
+		return response(400, `API method is invalid. Valid methods are ${validMethods}`)
 	try {
 		const auth = await authorize()
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
-		return {
-			statusCode: 200,
-			body: JSON.stringify(data, null, 4)
-		}
+		return response(200, data)
 	} catch (error) {
 		if (error.authError)
 			throw { statusCode: 500, body: JSON.stringify(error.message, null, 4) }
@@ -50,10 +35,7 @@ const request = async (headers, body, queryStringParameters) => {
 			throw { statusCode: 400, body: error.response.data.error }
 		}
 		console.log(error)
-		return {
-			statusCode: 500,
-			body: JSON.stringify(`Internal error. ${error}`, null, 4)
-		}
+		return response(500, `Internal error. ${error}`)
 	}
 }
 
