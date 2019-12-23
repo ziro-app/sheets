@@ -1,7 +1,7 @@
 const sheets = require('googleapis').google.sheets
 const sheet = sheets('v4').spreadsheets
-const authorize = require('../auth/authorize')
-const response = require('../utils/response')
+const response = require('../templates/response')
+const authorize = require('../utils/authorize')
 const {
 	areQueryParamsPresent,
 	isAppJsonHeaderNotPresent,
