@@ -6,7 +6,7 @@ const { allowedOrigin } = require('@ziro/middleware')
 const { auth } = require('@ziro/middleware')
 const { errorHandler } = require('@ziro/middleware')
 const { cors } = require('@ziro/middleware')
-const allowed = 'https://ziro.app'
+const allowed = process.env.DEV ? 'http://localhost:8080' : 'https://ziro.app'
 
 const main = handler =>
 	middy(handler)
