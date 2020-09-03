@@ -1,6 +1,9 @@
 const rule = origin =>
 	origin.startsWith('https://') && origin.endsWith('ziro.app') ||
-	origin.startsWith('https://') && origin.endsWith('ziro.com.br')
+	origin.startsWith('https://') && origin.endsWith('ziro.com.br') ||
+	origin === 'http://localhost:7070' ||
+	origin === 'http://localhost:8080' ||
+	origin === 'http://localhost:9090'
 
 const allowedOrigin = allowed => ({
 	before: ({ callback, event: { headers: { origin } } }, next) => {
