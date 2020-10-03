@@ -22,7 +22,7 @@
     "dotenv": "^8.2.0",
     "googleapis": "^60.0.1",
     "is-json": "^2.0.1",
-    "netlify-lambda": "^2.0.1"
+    "netlify-lambda": "^1.6.3"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.63"
