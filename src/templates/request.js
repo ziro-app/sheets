@@ -12,7 +12,6 @@ const {
 } = require('../utils/validations')
 
 const request = async (headers, body, queryStringParameters) => {
-	console.log('HERE')
 	const { apiResource, apiMethod, ...otherParams } = body
 	if (areQueryParamsPresent(queryStringParameters))
 		return response(400, 'usage of query string parameters is not allowed')
