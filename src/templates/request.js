@@ -1,6 +1,6 @@
 const sheets = require('googleapis').google.sheets
 const sheet = sheets('v4').spreadsheets
-const response = require('../templates/response')
+const response = require('./response')
 const authorize = require('../utils/authorize')
 const {
 	areQueryParamsPresent,
@@ -12,6 +12,7 @@ const {
 } = require('../utils/validations')
 
 const request = async (headers, body, queryStringParameters) => {
+	console.log('HERE')
 	const { apiResource, apiMethod, ...otherParams } = body
 	if (areQueryParamsPresent(queryStringParameters))
 		return response(400, 'usage of query string parameters is not allowed')
