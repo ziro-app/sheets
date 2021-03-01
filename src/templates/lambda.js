@@ -11,12 +11,12 @@ const allowed = ['http://localhost:7070', 'http://localhost:8080', 'http://local
 
 const lambda = handler =>
 	middy(handler)
-	.use(preflight)
-	.use(allowedOrigin(allowed))
-	.use(auth)
-	.use(checkIfPostRequest)
-	.use(jsonBodyParser())
-	.use(errorHandler)
-	.use(cors)
+		.use(preflight)
+		// .use(allowedOrigin(allowed))
+		.use(auth)
+		.use(checkIfPostRequest)
+		.use(jsonBodyParser())
+		.use(errorHandler)
+		.use(cors)
 
 module.exports = lambda
