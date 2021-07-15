@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@middy/core": "^1.4.0",
+    "@middy/http-cors": "^2.4.3",
     "@middy/http-json-body-parser": "^1.4.0",
     "@ziro/middleware": "^1.0.9",
     "axios": "^0.19.2",
