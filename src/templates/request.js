@@ -15,21 +15,15 @@ const request = async (headers, body, queryStringParameters) => {
 	const { apiResource, apiMethod, ...otherParams } = body
 	if (areQueryParamsPresent(queryStringParameters))
 		return response(400, 'usage of query string parameters is not allowed')
-	console.log('Passou: areQueryParamsPresent')
 	if (isAppJsonHeaderNotPresent(headers))
 		return response(400, 'content-type header must be application/json and body must be a raw json')
-	console.log('Passou: isAppJsonHeaderNotPresent')
 	if (isApiResourceInvalid(apiResource))
 		return response(400, `API resource is invalid. Valid resources are ${validResources}`)
-	console.log('Passou: isApiResourceInvalid')
 	if (isApiMethodInvalid(apiMethod))
 		return response(400, `API method is invalid. Valid methods are ${validMethods}`)
-	console.log('Passou: isApiMethodInvalid')
 	try {
 		const auth = await authorize()
-		console.log('Passou: authorize')
 		const { data } = await sheet[apiResource][apiMethod]({ auth, ...otherParams })
-		console.log('Passou: sheet')
 		return response(200, data)
 	} catch (error) {
 		if (error.authError)
